@@ -47,6 +47,91 @@
       "status": "Applied",
       "dateFound": "2026-06-14T11:15:00.000Z",
       "notes": "Sent application email. Waiting for response."
+    },
+    {
+      "id": "1781423663349",
+      "title": "React Developer Developer",
+      "company": "Delta Digital",
+      "location": "Remote",
+      "description": "We are seeking a talented React Developer Specialist to join our growing team at Delta Digital.\n      This is a full-time position located in Remote.\n      Requirements: \n      - Experience working in high-growth environments\n      - Proficient skills in the relevant technical stacks (JavaScript/React/Node/Python etc.)\n      - Strong communication skills\n      \n      If you are interested, please contact our talent acquisition team at careers@deltadigital.net or call us at +1-800-428-9671. Make sure to send your resume!",
+      "url": "https://jobs.deltadigital.net/careers/100",
+      "emails": [
+        "careers@deltadigital.net"
+      ],
+      "phones": [
+        "+1-800-428-9671"
+      ],
+      "status": "Found",
+      "dateFound": "2026-06-14T07:54:23.351Z",
+      "notes": ""
+    },
+    {
+      "id": "1781423663359",
+      "title": "React Developer Engineer",
+      "company": "Cyberdyne",
+      "location": "Remote",
+      "description": "We are seeking a talented React Developer Specialist to join our growing team at Cyberdyne.\n      This is a full-time position located in Remote.\n      Requirements: \n      - Experience working in high-growth environments\n      - Proficient skills in the relevant technical stacks (JavaScript/React/Node/Python etc.)\n      - Strong communication skills\n      \n      If you are interested, please contact our talent acquisition team at careers@cyberdyne.io or call us at +1-800-237-7314. Make sure to send your resume!",
+      "url": "https://jobs.cyberdyne.io/careers/101",
+      "emails": [
+        "careers@cyberdyne.io"
+      ],
+      "phones": [
+        "+1-800-237-7314"
+      ],
+      "status": "Found",
+      "dateFound": "2026-06-14T07:54:23.358Z",
+      "notes": ""
+    },
+    {
+      "id": "1781423663360",
+      "title": "React Developer Consultant",
+      "company": "Apex Solutions",
+      "location": "Remote",
+      "description": "We are seeking a talented React Developer Specialist to join our growing team at Apex Solutions.\n      This is a full-time position located in Remote.\n      Requirements: \n      - Experience working in high-growth environments\n      - Proficient skills in the relevant technical stacks (JavaScript/React/Node/Python etc.)\n      - Strong communication skills\n      \n      If you are interested, please contact our talent acquisition team at careers@apexsolutions.co or call us at +1-800-918-9484. Make sure to send your resume!",
+      "url": "https://jobs.apexsolutions.co/careers/102",
+      "emails": [
+        "careers@apexsolutions.co"
+      ],
+      "phones": [
+        "+1-800-918-9484"
+      ],
+      "status": "Found",
+      "dateFound": "2026-06-14T07:54:23.358Z",
+      "notes": ""
+    },
+    {
+      "id": "1781423663361",
+      "title": "React Developer Architect",
+      "company": "OmniCorp",
+      "location": "Remote",
+      "description": "We are seeking a talented React Developer Specialist to join our growing team at OmniCorp.\n      This is a full-time position located in Remote.\n      Requirements: \n      - Experience working in high-growth environments\n      - Proficient skills in the relevant technical stacks (JavaScript/React/Node/Python etc.)\n      - Strong communication skills\n      \n      If you are interested, please contact our talent acquisition team at careers@omnicorp.org or call us at +1-800-320-8849. Make sure to send your resume!",
+      "url": "https://jobs.omnicorp.org/careers/103",
+      "emails": [
+        "careers@omnicorp.org"
+      ],
+      "phones": [
+        "+1-800-320-8849"
+      ],
+      "status": "Found",
+      "dateFound": "2026-06-14T07:54:23.358Z",
+      "notes": ""
+    },
+    {
+      "id": "1781423663362",
+      "title": "React Developer Lead",
+      "company": "Vesper Labs",
+      "location": "Remote",
+      "description": "We are seeking a talented React Developer Specialist to join our growing team at Vesper Labs.\n      This is a full-time position located in Remote.\n      Requirements: \n      - Experience working in high-growth environments\n      - Proficient skills in the relevant technical stacks (JavaScript/React/Node/Python etc.)\n      - Strong communication skills\n      \n      If you are interested, please contact our talent acquisition team at careers@vesperlabs.com or call us at +1-800-276-2858. Make sure to send your resume!",
+      "url": "https://jobs.vesperlabs.com/careers/104",
+      "emails": [
+        "careers@vesperlabs.com"
+      ],
+      "phones": [
+        "+1-800-276-2858"
+      ],
+      "status": "Found",
+      "dateFound": "2026-06-14T07:54:23.358Z",
+      "notes": ""
     }
   ],
   "contacts": [

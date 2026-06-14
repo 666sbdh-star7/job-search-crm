@@ -239,12 +239,18 @@ function renderPipeline() {
     const phoneStr = job.phones && job.phones.length > 0 ? job.phones.join(", ") : "No phone";
     
     const hasEmail = job.emails && job.emails.length > 0;
+    const sourceLabel = job.source || 'Found';
+    const sourceClass = sourceLabel.toLowerCase() === 'indeed' ? 'source-indeed' : (sourceLabel.toLowerCase() === 'simulated' ? 'source-simulated' : '');
+    const sourceIcon = sourceLabel.toLowerCase() === 'indeed' ? '🔵' : (sourceLabel.toLowerCase() === 'simulated' ? '🟣' : '📋');
 
     card.innerHTML = `
       <div class="job-info">
         <div class="job-title-row">
           <h3>${escapeHTML(job.title)}</h3>
-          <span class="status-badge ${job.status.toLowerCase()}">${job.status}</span>
+          <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+            ${job.source ? `<span class="source-tag ${sourceClass}">${sourceIcon} ${escapeHTML(job.source)}</span>` : ''}
+            <span class="status-badge ${job.status.toLowerCase()}">${job.status}</span>
+          </div>
         </div>
         <div class="job-meta-row">
           <span>🏢 ${escapeHTML(job.company)}</span>
@@ -323,6 +329,8 @@ async function triggerSearch(event) {
   event.preventDefault();
   const keyword = document.getElementById("search-keyword").value;
   const location = document.getElementById("search-location").value;
+  const sourceEl = document.getElementById("search-source");
+  const sources = sourceEl ? sourceEl.value : 'all';
 
   const btn = document.getElementById("search-btn");
   const spinner = document.getElementById("search-spinner");
@@ -332,14 +340,17 @@ async function triggerSearch(event) {
   spinner.classList.remove("hidden");
 
   clearTerminal();
-  appendLog("search-console", `[COMMAND] Query: Keyword="${keyword}", Location="${location}"`);
+  appendLog("search-console", `[COMMAND] Query: Keyword="${keyword}", Location="${location}", Source="${sources}"`);
   appendLog("search-console", `[SYSTEM] Connecting to extractor engine...`);
+  if (sources === 'indeed' || sources === 'all') {
+    appendLog("search-console", `[INDEED] Initializing Indeed job search pipeline...`);
+  }
 
   try {
     const res = await fetch('/api/search', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ keyword, location })
+      body: JSON.stringify({ keyword, location, sources })
     });
     
     if (!res.ok) throw new Error("Search command failed");
