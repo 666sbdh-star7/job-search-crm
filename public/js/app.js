@@ -797,3 +797,124 @@ async function deleteCRMContact(contactId) {
     console.error("Error removing contact recruiter:", error);
   }
 }
+
+// AI Copilot Chat State
+let chatHistory = [
+  {
+    role: 'assistant',
+    content: 'Hello! I am your AI Copilot. I have access to your resume details, job search pipeline, and recruiter contacts.\n\nHow can I assist you today? You can choose one of the suggestions below or type a message!'
+  }
+];
+
+// Send chat message
+async function sendChatMessage(event) {
+  if (event) event.preventDefault();
+  const inputEl = document.getElementById("chat-input-field");
+  const messageText = inputEl.value.trim();
+  if (!messageText && !event) {
+    // If triggered by chip, messageText might be empty but chip set the value
+    // So let's re-read input just in case
+  }
+  const actualText = messageText || inputEl.value.trim();
+  if (!actualText) return;
+
+  // Clear input
+  inputEl.value = "";
+
+  // Append user message
+  chatHistory.push({ role: 'user', content: actualText });
+  renderChatHistory();
+
+  // Show loading bot bubble
+  const messagesContainer = document.getElementById("chat-messages-container");
+  const loadingBubble = document.createElement("div");
+  loadingBubble.className = "chat-message bot";
+  loadingBubble.id = "chat-loading-bubble";
+  loadingBubble.innerHTML = `
+    <div class="chat-message-bubble">
+      <span class="btn-spinner" style="border: 2px solid rgba(255,255,255,0.1); border-top: 2px solid var(--accent-purple); width: 14px; height: 14px;"></span> Thinking...
+    </div>
+  `;
+  messagesContainer.appendChild(loadingBubble);
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: chatHistory })
+    });
+
+    // Remove loading bubble
+    const loadingEl = document.getElementById("chat-loading-bubble");
+    if (loadingEl) loadingEl.remove();
+
+    if (!res.ok) {
+      const result = await res.json();
+      throw new Error(result.error || "Failed to communicate with AI");
+    }
+
+    const result = await res.json();
+    chatHistory.push({ role: 'assistant', content: result.response });
+    renderChatHistory();
+  } catch (error) {
+    console.error("Chat Error:", error);
+    
+    const loadingEl = document.getElementById("chat-loading-bubble");
+    if (loadingEl) loadingEl.remove();
+
+    const errBubble = document.createElement("div");
+    errBubble.className = "chat-message bot";
+    errBubble.innerHTML = `
+      <div class="chat-message-bubble" style="border-color: var(--accent-red); color: var(--accent-red); background: rgba(239, 68, 68, 0.05);">
+        ⚠️ Error: ${error.message}
+      </div>
+    `;
+    messagesContainer.appendChild(errBubble);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  }
+}
+
+// Render Chat History bubbles
+function renderChatHistory() {
+  const container = document.getElementById("chat-messages-container");
+  container.innerHTML = "";
+
+  chatHistory.forEach(msg => {
+    const bubbleWrapper = document.createElement("div");
+    bubbleWrapper.className = `chat-message ${msg.role === 'assistant' ? 'bot' : 'user'}`;
+    
+    // Convert markdown code blocks loosely for presentation
+    let formattedText = escapeHTML(msg.content);
+    
+    // Format markdown pre/code blocks
+    formattedText = formattedText.replace(/```([\s\S]*?)```/g, (match, p1) => {
+      return `<pre><code>${p1}</code></pre>`;
+    });
+    
+    // Format inline code backticks
+    formattedText = formattedText.replace(/`([^`]+)`/g, '<code>$1</code>');
+    
+    // Format list items
+    formattedText = formattedText.replace(/^\* (.*?)$/gm, '<li>$1</li>');
+    formattedText = formattedText.replace(/^- (.*?)$/gm, '<li>$1</li>');
+    formattedText = formattedText.replace(/(<li>.*?<\/li>)/gs, '<ul>$1</ul>');
+    // clean multiple wrapped lists
+    formattedText = formattedText.replace(/<\/ul>\s*<ul>/g, '');
+
+    bubbleWrapper.innerHTML = `
+      <div class="chat-message-bubble">${formattedText}</div>
+    `;
+    container.appendChild(bubbleWrapper);
+  });
+  
+  container.scrollTop = container.scrollHeight;
+}
+
+// Suggestion chip clicking handler
+function clickSuggestionChip(promptText) {
+  const inputEl = document.getElementById("chat-input-field");
+  inputEl.value = promptText;
+  sendChatMessage();
+}
+

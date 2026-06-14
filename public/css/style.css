@@ -1047,3 +1047,213 @@ textarea {
   border-radius: 4px;
 }
 
+/* AI Copilot Chat Styling */
+.chat-messages-container::-webkit-scrollbar {
+  width: 6px;
+}
+.chat-messages-container::-webkit-scrollbar-thumb {
+  background-color: var(--border-glass);
+  border-radius: 4px;
+}
+
+.chat-message {
+  display: flex;
+  margin-bottom: 6px;
+  width: 100%;
+}
+
+.chat-message.bot {
+  justify-content: flex-start;
+}
+
+.chat-message.user {
+  justify-content: flex-end;
+}
+
+.chat-message-bubble {
+  max-width: 80%;
+  padding: 14px 18px;
+  border-radius: 16px;
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.chat-message.bot .chat-message-bubble {
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-glass);
+  color: var(--text-primary);
+  border-bottom-left-radius: 4px;
+}
+
+.chat-message.user .chat-message-bubble {
+  background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+  color: white;
+  border-bottom-right-radius: 4px;
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.15);
+}
+
+.chat-message-bubble code {
+  font-family: var(--font-mono);
+  background-color: rgba(0,0,0,0.3);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #a78bfa;
+}
+
+.chat-message-bubble pre {
+  background-color: #05070b;
+  border: 1px solid var(--border-glass);
+  border-radius: 8px;
+  padding: 14px;
+  overflow-x: auto;
+  margin: 10px 0;
+}
+
+.chat-message-bubble pre code {
+  background: none;
+  padding: 0;
+  color: #38bdf8;
+  font-size: 13px;
+}
+
+/* Suggestion Chips */
+.chat-suggestion-chips .chip {
+  background-color: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-glass);
+  border-radius: 20px;
+  padding: 8px 16px;
+  color: var(--text-muted);
+  font-size: 12px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.chat-suggestion-chips .chip:hover {
+  background-color: rgba(139, 92, 246, 0.1);
+  color: #c084fc;
+  border-color: rgba(139, 92, 246, 0.3);
+}
+
+.chat-message-bubble ul, .chat-message-bubble ol {
+  padding-left: 20px;
+  margin: 8px 0;
+}
+
+.chat-message-bubble li {
+  margin-bottom: 4px;
+}
+
+/* Mobile Responsive Media Queries */
+@media (max-width: 768px) {
+  .app-container {
+    flex-direction: column;
+  }
+  
+  .sidebar {
+    width: 100% !important;
+    height: 64px !important;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    border-right: none !important;
+    border-top: 1px solid var(--border-glass);
+    flex-direction: row !important;
+    padding: 0 10px !important;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 998;
+    background-color: #0d1017;
+  }
+  
+  .sidebar-header, .sidebar-footer {
+    display: none !important;
+  }
+  
+  .sidebar-menu {
+    flex-direction: row !important;
+    width: 100%;
+    height: 100%;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 0;
+  }
+  
+  .menu-item {
+    padding: 6px 10px !important;
+    border-radius: 8px;
+    font-size: 10px !important;
+    flex-direction: column !important;
+    gap: 4px !important;
+    align-items: center !important;
+    justify-content: center;
+    border: none !important;
+    background: none !important;
+    box-shadow: none !important;
+  }
+  
+  .menu-item.active {
+    color: #c084fc !important;
+    background: rgba(139, 92, 246, 0.1) !important;
+  }
+  
+  .menu-icon {
+    font-size: 16px;
+    margin: 0 !important;
+  }
+  
+  .main-content {
+    padding: 16px 16px 80px 16px !important;
+  }
+  
+  .top-header {
+    margin-bottom: 20px;
+  }
+  
+  .top-header h1 {
+    font-size: 22px;
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px;
+  }
+  
+  .stat-card {
+    padding: 16px;
+  }
+  
+  .stat-value {
+    font-size: 28px;
+  }
+  
+  .dashboard-body {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .settings-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .contacts-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .crm-drawer {
+    width: 100% !important;
+  }
+  
+  .search-form-layout {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .input-row {
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+}
+
+

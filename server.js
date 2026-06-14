@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
@@ -357,6 +358,96 @@ app.put('/api/contacts/:id/tasks/:taskId', (req, res) => {
   task.completed = req.body.completed !== undefined ? req.body.completed : !task.completed;
   writeDB(db);
   res.json({ success: true, task });
+});
+
+// Gemini AI Chat Copilot endpoint
+app.post('/api/chat', async (req, res) => {
+  const { messages } = req.body;
+  const db = readDB();
+  
+  const systemPrompt = `You are "AutoApply AI Copilot", a smart helper inside the user's Job search CRM dashboard.
+Your goal is to help them analyze job matchings, optimize skills, suggest resume edits, draft cover letters, write professional outreach emails, and answer questions.
+You have access to the user's current profile, job search list, and recruiter contacts list.
+Here is the active context:
+--------------------
+APPLICANT PROFILE:
+Name: ${db.profile.name || "Jane Doe"}
+Email: ${db.profile.email || ""}
+Phone: ${db.profile.phone || ""}
+Skills: ${db.profile.skills || ""}
+Resume context: ${db.profile.resumeText || ""}
+--------------------
+JOB LISTINGS IN FUNNEL:
+${JSON.stringify(db.jobs || [])}
+--------------------
+RECRUITER CRM CONTACTS:
+${JSON.stringify(db.contacts || [])}
+--------------------
+
+Instructions:
+1. Always be professional, helpful, and encourage the user.
+2. If asked to write an email or cover letter, tailor it to the user's profile and the specific company/role they ask about. Use their name in the sign-off.
+3. Be concise and formatted in clean markdown.`;
+
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) {
+    return res.status(400).json({ error: "Gemini API key is not configured on the server." });
+  }
+
+  // Format messages for Gemini API
+  // Contents schema: { role: 'user'|'model', parts: [{ text: '...' }] }
+  const formattedContents = [];
+  
+  messages.forEach(msg => {
+    formattedContents.push({
+      role: msg.role === 'assistant' ? 'model' : 'user',
+      parts: [{ text: msg.content }]
+    });
+  });
+
+  let modelName = 'gemini-1.5-flash';
+  try {
+    const listRes = await axios.get(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
+    if (listRes.data && listRes.data.models) {
+      const modelsList = listRes.data.models.map(m => m.name);
+      // Check if gemini-1.5-flash is in the list
+      const hasFlash = modelsList.some(name => name.includes('gemini-1.5-flash'));
+      if (!hasFlash) {
+        // Find first model supporting generateContent
+        const fallback = listRes.data.models.find(m => m.supportedGenerationMethods && m.supportedGenerationMethods.includes('generateContent'));
+        if (fallback) {
+          modelName = fallback.name.replace('models/', '');
+        }
+      }
+    }
+  } catch (listErr) {
+    console.warn("Skipping ListModels fallback, using default gemini-1.5-flash:", listErr.message);
+  }
+
+  try {
+    const response = await axios.post(
+      `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`,
+      {
+        contents: formattedContents,
+        systemInstruction: {
+          parts: [{ text: systemPrompt }]
+        }
+      },
+      {
+        headers: { 'Content-Type': 'application/json' }
+      }
+    );
+
+    if (response.data.candidates && response.data.candidates[0] && response.data.candidates[0].content) {
+      const botResponseText = response.data.candidates[0].content.parts[0].text;
+      res.json({ success: true, response: botResponseText });
+    } else {
+      res.status(500).json({ error: "Unexpected response format from Gemini API." });
+    }
+  } catch (err) {
+    console.error("Gemini API Error:", err.response ? err.response.data : err.message);
+    res.status(500).json({ error: `Gemini API Error: ${err.response ? JSON.stringify(err.response.data) : err.message}` });
+  }
 });
 
 // Serve frontend and start server

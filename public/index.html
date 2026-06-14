@@ -32,6 +32,9 @@
         <button id="nav-crm" class="menu-item" onclick="switchTab('crm')">
           <span class="menu-icon">🤝</span> Recruiter CRM
         </button>
+        <button id="nav-copilot" class="menu-item" onclick="switchTab('copilot')">
+          <span class="menu-icon">🧠</span> AI Copilot
+        </button>
         <button id="nav-settings" class="menu-item" onclick="switchTab('settings')">
           <span class="menu-icon">⚙️</span> Settings
         </button>
@@ -182,6 +185,43 @@
 
         <div class="pipeline-list" id="pipeline-container">
           <!-- Dynamic job cards will go here -->
+        </div>
+      </section>
+
+      <!-- TAB: AI Copilot -->
+      <section id="tab-copilot" class="tab-panel">
+        <div class="card copilot-chat-card" style="height: calc(100vh - 170px); display: flex; flex-direction: column; padding: 20px; margin-bottom: 0;">
+          <div class="card-header" style="margin-bottom: 12px; border-bottom: 1px solid var(--border-glass); padding-bottom: 12px;">
+            <div>
+              <h2>Gemini AI Copilot</h2>
+              <p class="text-muted" style="font-size: 12px; margin-top: 4px;">Context-aware assistant reading your profile, jobs list, and recruiter CRM</p>
+            </div>
+            <span class="status-badge applied" style="background-color: rgba(139, 92, 246, 0.1); color: var(--accent-purple)">Gemini 1.5 Flash</span>
+          </div>
+          
+          <!-- Chat messages stream -->
+          <div class="chat-messages-container" id="chat-messages-container" style="flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; padding: 10px 0;">
+            <div class="chat-message bot">
+              <div class="chat-message-bubble">
+                Hello! I am your AI Copilot. I have access to your resume details, job search pipeline, and recruiter contacts.
+                <br><br>
+                How can I assist you today? You can choose one of the suggestions below or type a message!
+              </div>
+            </div>
+          </div>
+          
+          <!-- Suggestion Chips -->
+          <div class="chat-suggestion-chips" id="chat-suggestion-chips" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; padding-top: 10px; border-top: 1px solid var(--border-glass);">
+            <button class="chip btn btn-sm btn-secondary" onclick="clickSuggestionChip('Write a personalized introduction email draft for the first job in my list.')">📝 Draft Outreach Email</button>
+            <button class="chip btn btn-sm btn-secondary" onclick="clickSuggestionChip('Compare my resume skills list against my jobs list and point out matching skills and any missing gaps.')">🔍 Analyze Skills Matching</button>
+            <button class="chip btn btn-sm btn-secondary" onclick="clickSuggestionChip('Draft a follow-up email template I can send to recruiters after an interview.')">🔁 Recruiter Follow-up</button>
+          </div>
+
+          <!-- Input area -->
+          <form id="chat-input-form" onsubmit="sendChatMessage(event)" style="display: flex; gap: 10px; padding-top: 14px; border-top: 1px solid var(--border-glass);">
+            <input type="text" id="chat-input-field" placeholder="Ask AI to write an email, check matching skills..." required style="flex-grow: 1; height: 44px; border-radius: 12px;">
+            <button type="submit" class="btn btn-primary" style="height: 44px; padding: 0 24px; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center;">Send</button>
+          </form>
         </div>
       </section>
 
