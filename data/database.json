@@ -1,0 +1,108 @@
+{
+  "profile": {
+    "name": "Jane Doe",
+    "email": "jane.doe@example.com",
+    "phone": "+1 234 567 890",
+    "skills": "JavaScript, Node.js, Express, HTML, CSS",
+    "experience": "2 years as Fullstack Developer",
+    "resumeText": "Jane Doe\nEmail: jane.doe@example.com\nPhone: +1 234 567 890\nSkills: JavaScript, Node.js, Express, HTML, CSS\nExperience: Fullstack Developer at TechCorp...",
+    "coverLetterTemplate": "Dear Hiring Manager at {company},\n\nI am writing to express my strong interest in the {role} position. With my background in {skills}, I am confident I would be a great fit.\n\nSincerely,\n{name}",
+    "smtp": {
+      "host": "",
+      "port": 587,
+      "secure": false,
+      "user": "",
+      "pass": ""
+    }
+  },
+  "jobs": [
+    {
+      "id": "1",
+      "title": "React Developer",
+      "company": "Innovative Solutions Ltd",
+      "location": "Remote",
+      "description": "Looking for a React developer to build interactive dashboards. Experience with Node.js is a plus. Contact us at careers@innovativesolutions.com or call +1-555-0199.",
+      "url": "https://example.com/job/1",
+      "emails": [
+        "careers@innovativesolutions.com"
+      ],
+      "phones": [
+        "+1-555-0199"
+      ],
+      "status": "Found",
+      "dateFound": "2026-06-14T11:20:00.000Z",
+      "notes": ""
+    },
+    {
+      "id": "2",
+      "title": "Node.js Backend Developer",
+      "company": "CoreTech Systems",
+      "location": "New York, NY",
+      "description": "We are hiring a backend developer to scale our APIs. Must know Express.js and MySQL. Contact recruiting@coretech.io.",
+      "url": "https://example.com/job/2",
+      "emails": [
+        "recruiting@coretech.io"
+      ],
+      "phones": [],
+      "status": "Applied",
+      "dateFound": "2026-06-14T11:15:00.000Z",
+      "notes": "Sent application email. Waiting for response."
+    }
+  ],
+  "contacts": [
+    {
+      "id": "c1",
+      "name": "Sarah Connor",
+      "email": "sconnor@cyberdyne.io",
+      "phone": "+1-555-0199",
+      "company": "Cyberdyne Systems",
+      "linkedin": "https://linkedin.com/in/sarah-connor",
+      "notes": "Talent Acquisition lead at Cyberdyne. Looking for full-stack developers.",
+      "interactions": [
+        {
+          "id": "i1",
+          "date": "2026-06-14T11:00:00.000Z",
+          "type": "Email Sent",
+          "notes": "Emailed initial resume and portfolo details."
+        },
+        {
+          "id": "i2",
+          "date": "2026-06-14T11:30:00.000Z",
+          "type": "Call",
+          "notes": "Introductory phone call. Tech interview scheduled for next week."
+        },
+        {
+          "id": "i_1781419545968",
+          "date": "2026-06-14T06:45:45.968Z",
+          "type": "Call",
+          "notes": "Followed up via call"
+        }
+      ],
+      "tasks": [
+        {
+          "id": "t1",
+          "title": "Send QA automation framework links",
+          "dueDate": "2026-06-16",
+          "completed": true
+        },
+        {
+          "id": "t2",
+          "title": "Revise React state project samples",
+          "dueDate": "2026-06-15",
+          "completed": true
+        }
+      ]
+    },
+    {
+      "id": "c_1781419703413",
+      "name": "John Connor",
+      "email": "",
+      "phone": "",
+      "company": "Resistance",
+      "linkedin": "",
+      "notes": "",
+      "interactions": [],
+      "tasks": []
+    }
+  ]
+}

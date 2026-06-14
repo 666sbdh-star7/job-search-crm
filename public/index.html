@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auto-Apply & Job Search Dashboard</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-icon">🚀</div>
+        <span class="logo-text">AutoApply</span>
+      </div>
+      <nav class="sidebar-menu">
+        <button id="nav-dashboard" class="menu-item active" onclick="switchTab('dashboard')">
+          <span class="menu-icon">📊</span> Dashboard
+        </button>
+        <button id="nav-search" class="menu-item" onclick="switchTab('search')">
+          <span class="menu-icon">🔍</span> Search & Extract
+        </button>
+        <button id="nav-pipeline" class="menu-item" onclick="switchTab('pipeline')">
+          <span class="menu-icon">💼</span> Job Pipeline
+        </button>
+        <button id="nav-crm" class="menu-item" onclick="switchTab('crm')">
+          <span class="menu-icon">🤝</span> Recruiter CRM
+        </button>
+        <button id="nav-settings" class="menu-item" onclick="switchTab('settings')">
+          <span class="menu-icon">⚙️</span> Settings
+        </button>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="status-indicator online"></div>
+        <span class="status-text">System Active</span>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <!-- Top header bar -->
+      <header class="top-header">
+        <h1 id="page-title">Dashboard Overview</h1>
+        <div class="user-pill">
+          <span id="user-name-display">Jane Doe</span>
+          <div class="avatar">JD</div>
+        </div>
+      </header>
+
+      <!-- TAB: Dashboard -->
+      <section id="tab-dashboard" class="tab-panel active">
+        <!-- Dashboard Stats Grid -->
+        <div class="stats-grid">
+          <div class="stat-card gradient-purple">
+            <div class="stat-header">
+              <span class="stat-label">Total Jobs Found</span>
+              <span class="stat-icon">🔍</span>
+            </div>
+            <div id="stat-total" class="stat-value">0</div>
+            <div class="stat-footer">Extracted from search logs</div>
+          </div>
+          <div class="stat-card gradient-blue">
+            <div class="stat-header">
+              <span class="stat-label">Applied</span>
+              <span class="stat-icon">📩</span>
+            </div>
+            <div id="stat-applied" class="stat-value">0</div>
+            <div class="stat-footer">Emails sent automatically</div>
+          </div>
+          <div class="stat-card gradient-green">
+            <div class="stat-header">
+              <span class="stat-label">Interviews Scheduled</span>
+              <span class="stat-icon">🎉</span>
+            </div>
+            <div id="stat-interviews" class="stat-value">0</div>
+            <div class="stat-footer">Status set to Interview</div>
+          </div>
+          <div class="stat-card gradient-orange">
+            <div class="stat-header">
+              <span class="stat-label">Active Contacts</span>
+              <span class="stat-icon">📞</span>
+            </div>
+            <div id="stat-contacts" class="stat-value">0</div>
+            <div class="stat-footer">Unique phone & email lists</div>
+          </div>
+        </div>
+
+        <!-- Dashboard Charts and Pipeline Summary -->
+        <div class="dashboard-body">
+          <div class="card recent-jobs-card">
+            <div class="card-header">
+              <h2>Recent Extractions</h2>
+              <button class="btn btn-secondary" onclick="switchTab('pipeline')">View All</button>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Job Title</th>
+                    <th>Company</th>
+                    <th>Location</th>
+                    <th>Contact Emails</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="recent-jobs-tbody">
+                  <!-- Dynamic rows go here -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card terminal-preview-card">
+            <div class="card-header">
+              <h2>Live Action Logs</h2>
+              <div class="terminal-dots">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+              </div>
+            </div>
+            <div class="terminal-console mini-console" id="dashboard-console">
+              [SYSTEM] Dashboard initialized. Waiting for commands...
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB: Search & Extract -->
+      <section id="tab-search" class="tab-panel">
+        <div class="card search-control-card">
+          <div class="card-header">
+            <h2>Automated Job Extractor</h2>
+          </div>
+          <p class="card-subtitle">Enter your query keywords and location. The scraper agent will query search results, extract emails and phone contacts, and load them into your pipeline.</p>
+          
+          <form id="search-form" class="search-form-layout" onsubmit="triggerSearch(event)">
+            <div class="input-group">
+              <label for="search-keyword">Job Title / Keywords</label>
+              <input type="text" id="search-keyword" placeholder="e.g. React Developer, Node.js Engineer" required>
+            </div>
+            <div class="input-group">
+              <label for="search-location">Location</label>
+              <input type="text" id="search-location" placeholder="e.g. Remote, New York, London">
+            </div>
+            <button type="submit" id="search-btn" class="btn btn-primary">
+              <span class="btn-spinner hidden" id="search-spinner"></span>
+              Start Agent Search
+            </button>
+          </form>
+        </div>
+
+        <div class="card terminal-card">
+          <div class="card-header">
+            <h2>Extractor Agent Terminal Output</h2>
+            <button class="btn btn-sm btn-secondary" onclick="clearTerminal()">Clear Console</button>
+          </div>
+          <div class="terminal-console" id="search-console">
+            [READY] Scraper agent waiting for query input...
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB: Job Pipeline -->
+      <section id="tab-pipeline" class="tab-panel">
+        <div class="pipeline-header-controls">
+          <h2>Application Funnel</h2>
+          <div class="filter-controls">
+            <button class="filter-btn active" onclick="filterPipeline('All')">All</button>
+            <button class="filter-btn" onclick="filterPipeline('Found')">Found</button>
+            <button class="filter-btn" onclick="filterPipeline('Applied')">Applied</button>
+            <button class="filter-btn" onclick="filterPipeline('Interview')">Interview</button>
+            <button class="filter-btn" onclick="filterPipeline('Offer')">Offer</button>
+          </div>
+        </div>
+
+        <div class="pipeline-list" id="pipeline-container">
+          <!-- Dynamic job cards will go here -->
+        </div>
+      </section>
+
+      <!-- TAB: Settings -->
+      <section id="tab-settings" class="tab-panel">
+        <div class="settings-grid">
+          <!-- Column 1: Profile -->
+          <div class="card">
+            <h2>Applicant Profile</h2>
+            <form id="profile-form" onsubmit="saveProfile(event)">
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="profile-name">Full Name</label>
+                  <input type="text" id="profile-name" required>
+                </div>
+              </div>
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="profile-email">Default Email</label>
+                  <input type="email" id="profile-email" required>
+                </div>
+                <div class="input-group">
+                  <label for="profile-phone">Phone Number</label>
+                  <input type="text" id="profile-phone">
+                </div>
+              </div>
+              <div class="input-group">
+                <label for="profile-skills">Key Skills (comma separated)</label>
+                <input type="text" id="profile-skills" placeholder="React, Node.js, Express, JavaScript">
+              </div>
+              <div class="input-group">
+                <label for="profile-resume">Resume/Experience Brief</label>
+                <textarea id="profile-resume" rows="6" placeholder="Paste your detailed resume or professional summary here..."></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Save Profile</button>
+            </form>
+          </div>
+
+          <!-- Column 2: Template & SMTP Config -->
+          <div class="settings-column-2">
+            <div class="card">
+              <h2>Cover Letter Template</h2>
+              <form id="template-form" onsubmit="saveTemplate(event)">
+                <div class="input-group">
+                  <label for="cover-letter-template">Template Body</label>
+                  <textarea id="cover-letter-template" rows="8"></textarea>
+                  <span class="help-text">Use tags: <code>{company}</code>, <code>{role}</code>, <code>{skills}</code>, <code>{name}</code></span>
+                </div>
+                <button type="submit" class="btn btn-primary">Save Template</button>
+              </form>
+            </div>
+
+            <div class="card">
+              <h2>SMTP Setup (Optional)</h2>
+              <p class="card-subtitle text-muted">Configure your email SMTP for real auto-applying emails. If blank, the system works in Simulated Mode.</p>
+              <form id="smtp-form" onsubmit="saveSMTP(event)">
+                <div class="input-row">
+                  <div class="input-group">
+                    <label for="smtp-host">SMTP Host</label>
+                    <input type="text" id="smtp-host" placeholder="smtp.gmail.com">
+                  </div>
+                  <div class="input-group">
+                    <label for="smtp-port">Port</label>
+                    <input type="number" id="smtp-port" placeholder="587">
+                  </div>
+                </div>
+                <div class="input-row">
+                  <div class="input-group">
+                    <label for="smtp-user">User (Email)</label>
+                    <input type="text" id="smtp-user" placeholder="yourname@gmail.com">
+                  </div>
+                  <div class="input-group">
+                    <label for="smtp-pass">Password / App Key</label>
+                    <input type="password" id="smtp-pass" placeholder="••••••••••••••••">
+                  </div>
+                </div>
+                <div class="smtp-secure-wrapper">
+                  <input type="checkbox" id="smtp-secure">
+                  <label for="smtp-secure">SSL/TLS Secure connection</label>
+                </div>
+                <button type="submit" class="btn btn-secondary">Save SMTP Config</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB: CRM Panel -->
+      <section id="tab-crm" class="tab-panel">
+        <!-- CRM Stats Grid -->
+        <div class="stats-grid">
+          <div class="stat-card gradient-purple">
+            <div class="stat-header">
+              <span class="stat-label">Total Contacts</span>
+              <span class="stat-icon">🤝</span>
+            </div>
+            <div id="crm-stat-contacts" class="stat-value">0</div>
+            <div class="stat-footer">Recruiter profiles in database</div>
+          </div>
+          <div class="stat-card gradient-blue">
+            <div class="stat-header">
+              <span class="stat-label">Pending Reminders</span>
+              <span class="stat-icon">📋</span>
+            </div>
+            <div id="crm-stat-tasks" class="stat-value">0</div>
+            <div class="stat-footer">Unfinished CRM checklist items</div>
+          </div>
+          <div class="stat-card gradient-green">
+            <div class="stat-header">
+              <span class="stat-label">Total Interactions</span>
+              <span class="stat-icon">📈</span>
+            </div>
+            <div id="crm-stat-interactions" class="stat-value">0</div>
+            <div class="stat-footer">Recorded log touches</div>
+          </div>
+        </div>
+
+        <!-- CRM Recruiter List Card -->
+        <div class="card crm-list-card">
+          <div class="card-header">
+            <h2>Recruitment Contacts Management</h2>
+            <button class="btn btn-primary btn-sm" onclick="openContactModal()">+ Add Contact</button>
+          </div>
+          <p class="card-subtitle">Manage recruiter relations, interactions, tasks, and follow-ups to stay on top of your outreach.</p>
+          <div class="contacts-grid" id="contacts-grid-container">
+            <!-- Recruiter cards populated dynamically -->
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Cover Letter Preview Modal -->
+  <div class="modal" id="preview-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modal-title">Application Email Preview</h3>
+        <button class="close-btn" onclick="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="preview-meta">
+          <div><strong>To:</strong> <span id="modal-to">company@careers.com</span></div>
+          <div><strong>Subject:</strong> <span id="modal-subject">Application for Role</span></div>
+        </div>
+        <div class="preview-body-content" id="modal-body-content">
+          Letter content...
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal()">Edit</button>
+        <button class="btn btn-primary" id="modal-send-btn">Send Now</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Contact Modal -->
+  <div class="modal" id="contact-modal">
+    <div class="modal-content" style="max-width: 500px;">
+      <div class="modal-header">
+        <h3 id="contact-modal-title">Add Recruitment Contact</h3>
+        <button class="close-btn" onclick="closeContactModal()">&times;</button>
+      </div>
+      <form id="contact-form" onsubmit="saveNewContact(event)">
+        <div class="modal-body">
+          <div class="input-group" style="margin-bottom: 12px;">
+            <label for="contact-name">Recruiter Name</label>
+            <input type="text" id="contact-name" placeholder="e.g. Sarah Connor" required>
+          </div>
+          <div class="input-row" style="margin-bottom: 12px; display: flex; gap: 12px;">
+            <div class="input-group" style="flex: 1;">
+              <label for="contact-email">Email</label>
+              <input type="email" id="contact-email" placeholder="e.g. sconnor@company.com">
+            </div>
+            <div class="input-group" style="flex: 1;">
+              <label for="contact-phone">Phone</label>
+              <input type="text" id="contact-phone" placeholder="e.g. +1-555-0199">
+            </div>
+          </div>
+          <div class="input-row" style="margin-bottom: 12px; display: flex; gap: 12px;">
+            <div class="input-group" style="flex: 1;">
+              <label for="contact-company">Company</label>
+              <input type="text" id="contact-company" placeholder="e.g. Cyberdyne Systems">
+            </div>
+            <div class="input-group" style="flex: 1;">
+              <label for="contact-linkedin">LinkedIn Profile</label>
+              <input type="text" id="contact-linkedin" placeholder="https://linkedin.com/...">
+            </div>
+          </div>
+          <div class="input-group">
+            <label for="contact-notes">Notes / Context</label>
+            <textarea id="contact-notes" rows="4" placeholder="Met on LinkedIn / extracted from job desc..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeContactModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Recruiter</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Slide-out CRM Recruiter Details Drawer -->
+  <div class="crm-drawer" id="crm-details-drawer">
+    <div class="drawer-header">
+      <div class="drawer-title-row">
+        <h2 id="drawer-recruiter-name">Sarah Connor</h2>
+        <button class="drawer-close" onclick="closeCRMDrawer()">&times;</button>
+      </div>
+      <p id="drawer-recruiter-meta" style="color: var(--text-muted); font-size: 13px; margin-top: 4px;">Cyberdyne Systems</p>
+      <div class="drawer-actions-row" style="margin-top: 14px; display: flex; gap: 8px;">
+        <a id="drawer-email-btn" class="btn btn-sm btn-secondary" href="#" target="_blank">✉️ Email</a>
+        <a id="drawer-linkedin-btn" class="btn btn-sm btn-secondary" href="#" target="_blank">🔗 LinkedIn</a>
+        <button id="drawer-delete-btn" class="btn btn-sm btn-secondary" style="color: var(--accent-red)">🗑️ Delete</button>
+      </div>
+    </div>
+    
+    <div class="drawer-body">
+      <!-- Notes Section -->
+      <div class="drawer-section" style="margin-bottom: 24px;">
+        <h3 style="font-size: 14px; font-weight: 600; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px;">Recruiter Context</h3>
+        <p id="drawer-recruiter-notes" class="drawer-notes-block">No context notes added yet.</p>
+      </div>
+      
+      <!-- Timeline Interaction Log -->
+      <div class="drawer-section" style="margin-bottom: 24px;">
+        <h3 style="font-size: 14px; font-weight: 600; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px;">Interaction History</h3>
+        
+        <!-- Form to add new interaction -->
+        <form id="drawer-interaction-form" onsubmit="addInteraction(event)" style="margin-bottom: 16px;">
+          <div class="input-row" style="display: flex; gap: 8px; margin-bottom: 8px;">
+            <select id="interaction-type" class="btn btn-sm btn-secondary" style="padding-right: 20px; font-size: 12px; height: 32px;">
+              <option value="Note">📝 Note</option>
+              <option value="Email Sent">✉️ Email</option>
+              <option value="Call">📞 Call</option>
+              <option value="Interview">📅 Interview</option>
+              <option value="Follow-up">🔁 Follow-up</option>
+            </select>
+            <input type="text" id="interaction-text" placeholder="Add interaction details..." required style="flex-grow: 1; padding: 6px 12px; font-size: 13px; height: 32px;">
+            <button type="submit" class="btn btn-sm btn-primary" style="height: 32px; font-size: 12px; padding: 0 12px;">Log</button>
+          </div>
+        </form>
+        
+        <!-- Visual Timeline list -->
+        <div class="timeline" id="drawer-timeline">
+          <!-- Timeline bubbles populated dynamically -->
+        </div>
+      </div>
+
+      <!-- Checklist Reminders / Tasks -->
+      <div class="drawer-section">
+        <h3 style="font-size: 14px; font-weight: 600; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px;">Tasks & Follow-ups</h3>
+        <!-- Form to add tasks -->
+        <form id="drawer-task-form" onsubmit="addCRMTask(event)" style="margin-bottom: 12px;">
+          <div class="input-row" style="display: flex; gap: 8px; margin-bottom: 8px;">
+            <input type="text" id="task-title" placeholder="Schedule call, send resume..." required style="flex-grow: 1; padding: 6px 12px; font-size: 13px; height: 32px;">
+            <input type="date" id="task-duedate" style="padding: 6px 12px; font-size: 13px; height: 32px; width: 120px; border: 1px solid var(--border-glass); border-radius: 10px; background: rgba(255,255,255,0.03); color: white;">
+            <button type="submit" class="btn btn-sm btn-primary" style="height: 32px; font-size: 12px; padding: 0 12px;">Add</button>
+          </div>
+        </form>
+        
+        <!-- Checklist tasks items -->
+        <div class="crm-checklist" id="drawer-checklist">
+          <!-- Task checkbox blocks populated dynamically -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/app.js"></script>
+</body>
+</html>
